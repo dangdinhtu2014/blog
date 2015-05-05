@@ -146,7 +146,7 @@ if( isset( $array_op[1] ) )
 	// Lay thanh vien dang bai
 	if( ! empty( $array_userids ) )
 	{
-		$sql = "SELECT userid, username, full_name FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN(" . implode( ",", $array_userids ) . ")";
+		$sql = "SELECT userid, username, CONCAT(first_name, ' ', last_name) full_name FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN(" . implode( ",", $array_userids ) . ")";
 		$result = $db->query( $sql );
 		
 		$array_userids = array();
