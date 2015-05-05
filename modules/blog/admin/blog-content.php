@@ -605,7 +605,7 @@ if( $prosessMode != 'none' )
 
 // Sua lai noi dung
 if( ! empty( $array['hometext'] ) ) $array['hometext'] = nv_htmlspecialchars( $array['hometext'] );
-
+$array['bodyhtml'] = htmlspecialchars( nv_editor_br2nl( $array['bodyhtml'] ) );
 // Trinh soan thao
 if( defined( 'NV_EDITOR' ) )
 {

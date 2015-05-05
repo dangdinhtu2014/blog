@@ -152,6 +152,7 @@
 			</dd>
 		</dl>
 	</div>
+	<div style="display:block;clear: both;">&nbsp;</div>
 </form>
 <script type="text/javascript">
 function mediaHandle(){
@@ -222,6 +223,7 @@ $(document).ready(function(){
 	});
 });
 </script>
+<div class="clear"></div>
 <!-- END: main -->
 
 <!-- BEGIN: complete -->

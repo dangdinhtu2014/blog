@@ -131,7 +131,7 @@ if( ! empty( $array_table_pass ) )
 }
 
 // Du lieu phan trang
-$generate_page = $BL->pagination( $page_title, $base_url, $all_page, $per_page, $page );
+$generate_page = nv_alias_page( $page_title, $base_url, $all_page, $per_page, $page );
 $total_pages = ceil( $all_page / $per_page );
 
 // Them vao tieu de neu phan trang
@@ -143,25 +143,25 @@ if( $page > 1 )
 }
 
 // Open Graph
-$my_head .= "<meta property=\"og:title\" content=\"" . $page_title . ' ' . NV_TITLEBAR_DEFIS . ' ' . $global_config['site_name'] . "\" />\n";
-$my_head .= "<meta property=\"og:type\" content=\"website\" />\n";
-$my_head .= "<meta property=\"og:url\" content=\"" . NV_MY_DOMAIN . nv_url_rewrite( NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $global_array_cat[$catid]['alias'], true ) . "\" />\n";
-$my_head .= "<meta property=\"og:description\" content=\"" . $description . "\" />\n";
-
+ 
+$meta_property['og:title'] = $page_title . ' ' . NV_TITLEBAR_DEFIS . ' ' . $global_config['site_name'];
+$meta_property['og:type'] = 'website';
+$meta_property['og:url'] = NV_MY_DOMAIN . nv_url_rewrite( NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $global_array_cat[$catid]['alias'], true );
+$meta_property['og:description'] = $description;
 if( ! empty( $BL->setting['sysDefaultImage'] ) )
 {
 	if( preg_match( "/^\//", $BL->setting['sysDefaultImage'] ) )
 	{
-		$my_head .= "<meta property=\"og:image\" content=\"" . NV_MY_DOMAIN . $BL->setting['sysDefaultImage'] . "\" />\n";
+		$meta_property['og:image'] = NV_MY_DOMAIN . $BL->setting['sysDefaultImage'];	
 	}
 	else
 	{
-		$my_head .= "<meta property=\"og:image\" content=\"" . $BL->setting['sysDefaultImage'] . "\" />\n";
+		$meta_property['og:image'] = $BL->setting['sysDefaultImage'];
 	}
 }
 else
 {
-	$my_head .= "<meta property=\"og:image\" content=\"" . NV_MY_DOMAIN . NV_BASE_SITEURL . $global_config['site_logo'] . "\" />\n";
+	$meta_property['og:image'] = NV_MY_DOMAIN . NV_BASE_SITEURL . $global_config['site_logo'];	
 }
 
 $contents = nv_viewcat_theme( $array, $generate_page, $BL->setting, $page, $total_pages, $BL );

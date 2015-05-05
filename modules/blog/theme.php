@@ -13,13 +13,13 @@ if ( ! defined( 'NV_IS_MOD_BLOG' ) ) die( 'Stop!!!' );
 // Thêm vào meta tag
 if( ! empty( $BL->setting['sysFbAppID'] ) )
 {
-	$my_head .= "<meta property=\"fb:app_id\" content=\"" . $BL->setting['sysFbAppID'] . "\"/>" . NV_EOL;
+	$meta_property['fb:app_id'] = $BL->setting['sysFbAppID'];	
 }
 
 // Thêm id admin vào meta tag
 if( ! empty( $BL->setting['sysFbAdminID'] ) )
 {
-	$my_head .= "<meta property=\"fb:admins\" content=\"" . $BL->setting['sysFbAdminID'] . "\"/>" . NV_EOL;
+	$meta_property['fb:admins'] = $BL->setting['sysFbAdminID'];		
 }
 
 /**
@@ -69,8 +69,9 @@ function nv_main_theme( $array, $generate_page, $cfg, $page, $total_pages, $BL )
 	{
 		$row['pubtime'] = str_replace( array( ' AM ', ' PM ' ), array( ' SA ', ' CH ' ), nv_date( 'g:i A d/m/Y', $row['pubtime'] ) );
 		$row['numcomments'] = number_format( $row['numcomments'], 0, ',', '.' );
-		$row['linkComment'] = nv_url_rewrite( $row['link'], true ) . '#comment';
-		$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'icon-pencil' : $BL->setting['iconClass' . $row['posttype']];
+		$row['linkfullComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true );
+		$row['linkComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true ) . '#comment';
+		$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'fa icon-pencil' : 'fa ' . $BL->setting['iconClass' . $row['posttype']];
 		
 		// Cat phan gioi thieu ngan gon
 		if( $BL->setting['strCutHomeText'] )
@@ -196,10 +197,12 @@ function nv_viewcat_theme( $array, $generate_page, $cfg, $page, $total_pages, $B
 	
 	foreach( $array as $row )
 	{
+		$row['published'] = date("Y-m-d H:i:s", $row['pubtime']);
 		$row['pubtime'] = str_replace( array( ' AM ', ' PM ' ), array( ' SA ', ' CH ' ), nv_date( 'g:i A d/m/Y', $row['pubtime'] ) );
 		$row['numcomments'] = number_format( $row['numcomments'], 0, ',', '.' );
-		$row['linkComment'] = nv_url_rewrite( $row['link'], true ) . '#comment';
-		$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'icon-pencil' : $BL->setting['iconClass' . $row['posttype']];
+		$row['linkfullComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true );
+		$row['linkComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true ) . '#comment';
+		$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'fa icon-pencil' : 'fa ' . $BL->setting['iconClass' . $row['posttype']];
 		
 		// Cat phan gioi thieu ngan gon
 		if( $BL->setting['strCutHomeText'] )
@@ -322,8 +325,9 @@ function nv_detail_theme( $blog_data, $BL )
 	$blog_data['pubtimeGoogle'] = nv_date( 'Y-m-d', $blog_data['pubtime'] );
 	$blog_data['pubtime'] = str_replace( array( ' AM ', ' PM ' ), array( ' SA ', ' CH ' ), nv_date( 'g:i A d/m/Y', $blog_data['pubtime'] ) );
 	$blog_data['numcomments'] = number_format( $blog_data['numcomments'], 0, ',', '.' );
-	$blog_data['icon'] = empty( $BL->setting['iconClass' . $blog_data['posttype']] ) ? 'icon-pencil' : $BL->setting['iconClass' . $blog_data['posttype']];
+	$blog_data['icon'] = empty( $BL->setting['iconClass' . $blog_data['posttype']] ) ? 'fa icon-pencil' : 'fa ' . $BL->setting['iconClass' . $blog_data['posttype']];
 	$blog_data['postName'] = $blog_data['postName'] ? $blog_data['postName'] : 'N/A';
+ 
 
 	$xtpl->assign( 'DATA', $blog_data );
 	$xtpl->assign( 'NV_LANG_DATA', NV_LANG_DATA );
@@ -405,7 +409,7 @@ function nv_detail_theme( $blog_data, $BL )
 		$xtpl->assign( 'FB_APP_ID', $BL->setting['sysFbAppID'] );
 		$xtpl->parse( 'main.fbShare' );
 	}
-	
+ 
 	// Xuất bình luận
 	if( $BL->setting['commentType'] != 'none' )
 	{
@@ -511,8 +515,9 @@ function nv_detail_tags_theme( $array, $generate_page, $cfg, $page, $total_pages
 	{
 		$row['pubtime'] = str_replace( array( ' AM ', ' PM ' ), array( ' SA ', ' CH ' ), nv_date( 'g:i A d/m/Y', $row['pubtime'] ) );
 		$row['numcomments'] = number_format( $row['numcomments'], 0, ',', '.' );
-		$row['linkComment'] = nv_url_rewrite( $row['link'], true ) . '#comment';
-		$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'icon-pencil' : $BL->setting['iconClass' . $row['posttype']];
+		$row['linkfullComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true );
+		$row['linkComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true ) . '#comment';
+		$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'fa icon-pencil' : 'fa ' . $BL->setting['iconClass' . $row['posttype']];
 		
 		// Cat phan gioi thieu ngan gon
 		if( $BL->setting['strCutHomeText'] )
@@ -649,8 +654,9 @@ function nv_search_theme( $array, $page, $total_pages, $all_page, $generate_page
 			$row['hometext'] = $BL->BoldKeywordInStr( $row['hometext'], $array['q'] );
 			$row['pubtime'] = str_replace( array( ' AM ', ' PM ' ), array( ' SA ', ' CH ' ), nv_date( 'g:i A d/m/Y', $row['pubtime'] ) );
 			$row['numcomments'] = number_format( $row['numcomments'], 0, ',', '.' );
-			$row['linkComment'] = nv_url_rewrite( $row['link'], true ) . '#comment';
-			$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'icon-pencil' : $BL->setting['iconClass' . $row['posttype']];
+			$row['linkfullComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true );
+			$row['linkComment'] = NV_MY_DOMAIN . nv_url_rewrite( $row['link'], true ) . '#comment';
+			$row['icon'] = empty( $BL->setting['iconClass' . $row['posttype']] ) ? 'fa icon-pencil' : 'fa ' . $BL->setting['iconClass' . $row['posttype']];
 			
 			$xtpl->assign( 'ROW', $row );
 			$xtpl->parse( 'main.result.loop' );

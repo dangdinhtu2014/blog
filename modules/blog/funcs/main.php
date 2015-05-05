@@ -104,7 +104,7 @@ if( $page > 1 and empty( $array ) )
 // Lay thanh vien dang bai
 if( ! empty( $array_userids ) )
 {
-	$sql = "SELECT userid, username, full_name FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN(" . implode( ",", $array_userids ) . ")";
+	$sql = "SELECT userid, username, CONCAT(first_name, ' ', last_name) full_name FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN(" . implode( ",", $array_userids ) . ")";
 	$result = $db->query( $sql );
 	
 	$array_userids = array();
@@ -138,7 +138,8 @@ if( ! empty( $array_table_pass ) )
 }
 
 // Du lieu phan trang
-$generate_page = $BL->pagination( $page_title, $base_url, $all_page, $per_page, $page );
+ 
+$generate_page = nv_alias_page( $page_title, $base_url, $all_page, $per_page, $page );
 $total_pages = ceil( $all_page / $per_page );
 
 // Them vao tieu de neu phan trang
@@ -148,21 +149,24 @@ if( $page > 1 )
 	$key_words .= ', ' . $BL->glang('page') . ' ' . $page;
 	$description .= ' ' . NV_TITLEBAR_DEFIS . ' ' . $BL->glang('page') . ' ' . $page;
 }
-
+ 
+ 
 // Open Graph
 if( $global_config['site_home_module'] == $module_name and ! empty( $home ) )
 {
-	$my_head .= "<meta property=\"og:title\" content=\"" . $global_config['site_name'] . "\" />\n";
-	$my_head .= "<meta property=\"og:type\" content=\"website\" />\n";
-	$my_head .= "<meta property=\"og:url\" content=\"" . NV_MY_DOMAIN . nv_url_rewrite( NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA, true ) . "\" />\n";
-	$my_head .= "<meta property=\"og:description\" content=\"" . $global_config['site_description'] . "\" />\n";
+	$meta_property['og:title'] = $global_config['site_name'];
+	$meta_property['og:type'] = 'website';
+	$meta_property['og:url'] = NV_MY_DOMAIN . nv_url_rewrite( NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA, true );
+	$meta_property['og:description'] = $global_config['site_description'];
+	 
 }
 else
 {
-	$my_head .= "<meta property=\"og:title\" content=\"" . $page_title . ' ' . NV_TITLEBAR_DEFIS . ' ' . $global_config['site_name'] . "\" />\n";
-	$my_head .= "<meta property=\"og:type\" content=\"website\" />\n";
-	$my_head .= "<meta property=\"og:url\" content=\"" . NV_MY_DOMAIN . nv_url_rewrite( NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name, true ) . "\" />\n";
-	$my_head .= "<meta property=\"og:description\" content=\"" . $module_info['description'] . "\" />\n";
+	$meta_property['og:title'] = $page_title . ' ' . NV_TITLEBAR_DEFIS . ' ' . $global_config['site_name'];
+	$meta_property['og:type'] = 'website';
+	$meta_property['og:url'] = NV_MY_DOMAIN . nv_url_rewrite( NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name, true );
+	$meta_property['og:description'] = $module_info['description'];
+ 
 }
 
 if( ! empty( $BL->setting['sysDefaultImage'] ) )

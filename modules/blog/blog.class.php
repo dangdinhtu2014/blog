@@ -1072,7 +1072,7 @@ class nv_mod_blog
 			}
 		}
 		
-		return '<ul>' . $page_string . '</ul>';
+		return '<ul class="pagination">' . $page_string . '</ul>';
 	}
 	
 	public function BoldKeywordInStr( $str, $keyword )

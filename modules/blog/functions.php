@@ -95,7 +95,7 @@ if( $op == 'main' )
 					die();
 				}
 				
-				$sql = "SELECT a.*, b.username AS postName, b.full_name FROM " . $BL->table_prefix . "_rows AS a LEFT JOIN " . NV_USERS_GLOBALTABLE . " AS b ON a.postid=b.userid WHERE a.status=1 AND a.alias=" . $db->quote( $array_op[0] );
+				$sql = "SELECT a.*, b.username postname, CONCAT(b.first_name, ' ', b.last_name) full_name FROM " . $BL->table_prefix . "_rows AS a LEFT JOIN " . NV_USERS_GLOBALTABLE . " AS b ON a.postid=b.userid WHERE a.status=1 AND a.alias=" . $db->quote( $array_op[0] );
 				$result = $db->query( $sql );
 				
 				if( $result->rowCount() )

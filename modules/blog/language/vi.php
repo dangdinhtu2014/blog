@@ -28,6 +28,7 @@ $lang_module['noPost'] = 'Hiện tại chưa có bài viết nào';
 
 $lang_module['newsletter'] = 'Đăng ký nhận tin';
 $lang_module['newsletterNote'] = 'Hãy để lại email của bạn, tôi sẽ thông báo với bạn khi có bài viết mới nhất';
+$lang_module['newslettersend'] = 'Gửi đi';
 $lang_module['newsletterEmailType'] = 'Nhập email của bạn';
 $lang_module['newsletterIsBan'] = 'Xin lỗi, email %s hiện đang bị cấm đăng ký và nhận thư';
 $lang_module['newsletterIsActive'] = 'Email %s đã đăng ký và hiện đang nhận thư';
