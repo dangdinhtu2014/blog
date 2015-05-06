@@ -146,12 +146,13 @@ if( isset( $array_op[1] ) )
 	// Lay thanh vien dang bai
 	if( ! empty( $array_userids ) )
 	{
-		$sql = "SELECT userid, username, CONCAT(first_name, ' ', last_name) full_name FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN(" . implode( ",", $array_userids ) . ")";
+		$sql = "SELECT userid, username, first_name, last_name FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN(" . implode( ",", $array_userids ) . ")";
 		$result = $db->query( $sql );
 		
 		$array_userids = array();
 		while( $row = $result->fetch() )
 		{
+			$row['full_name'] = ( $global_config['name_show'] )  ? $row['first_name'] . ' ' . $row['last_name'] : $row['last_name'] . ' ' . $row['first_name'];
 			$array_userids[$row['userid']] = $row['full_name'] ? $row['full_name'] : $row['username'];
 		}
 		
